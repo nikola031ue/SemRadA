@@ -39,9 +39,16 @@ def sluzbenik_session():
             racun = input(str("Broj racuna Klijenta: "))
             kolicina: float = float(input("Kolicina novca: "))
             polozaj = 2
+
             trenutno_stanje = u.trenutno_stanje(ime, prezime, racun, polozaj)
-            stanje = trenutno_stanje + kolicina
+            za_stednju = kolicina/100*5
+            za_stanje = kolicina - za_stednju
+            stanje = trenutno_stanje + za_stanje
             u.update_stanje(ime, prezime, racun, polozaj, stanje)
+
+            trenutna_stednja = u.trenutna_stednja(ime, prezime, racun, polozaj)
+            stednja = trenutna_stednja + za_stednju
+            u.update_stednja(ime, prezime, racun, polozaj, stednja)
             u.ispisi_klijenta(ime, prezime, racun, polozaj)
         elif izbor == "4":
             print("")
@@ -63,12 +70,18 @@ def sluzbenik_session():
             if trenutno_stanje_posiljaoca < kolicina_za_transakciju:
                 print("Nemate dovoljno novca na racunu!")
                 break
+            za_stednju = kolicina_za_transakciju/100*5
+            za_transakciju = kolicina_za_transakciju - za_stednju
 
             trenutno_stanje_posiljaoca = trenutno_stanje_posiljaoca - kolicina_za_transakciju
-            trenutno_stanje_primaoca = trenutno_stanje_primaoca + kolicina_za_transakciju
+            trenutno_stanje_primaoca = trenutno_stanje_primaoca + za_transakciju
+            trenutna_stednja_primaoca = u.trenutna_stednja(ime_primaoca, prezime_primaoca, racun_primaoca, polozaj)
+            trenutna_stednja_primaoca = trenutna_stednja_primaoca + za_stednju
 
             u.update_stanje(ime_posiljaoca, prezime_posiljaoca, racun_posiljaoca, polozaj, trenutno_stanje_posiljaoca)
             u.update_stanje(ime_primaoca, prezime_primaoca, racun_primaoca, polozaj, trenutno_stanje_primaoca)
+
+            u.update_stednja(ime_primaoca, prezime_primaoca, racun_primaoca, polozaj, trenutna_stednja_primaoca)
 
             print("Klijent posiljaoca:")
             u.ispisi_klijenta(ime_posiljaoca, prezime_posiljaoca, racun_posiljaoca, polozaj)

@@ -19,7 +19,8 @@ def klijent_session(ime, prezime, password, racun):
             polozaj = 2
 
             stanje = str(u.trenutno_stanje(ime, prezime, racun, polozaj))
-            print("Stanje na vasem racunu broj: " + racun + " je " + stanje + " dinara")
+            stednja = str(u.trenutna_stednja(ime, prezime, racun, polozaj))
+            print("Stanje na vasem racunu broj: " + racun + " je " + stanje + " dinara. Ustedeli ste: " + stednja + " dinara")
         elif izbor == "2":
             print("")
             print("Podizanje gotovine")

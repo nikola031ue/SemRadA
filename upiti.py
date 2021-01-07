@@ -31,6 +31,7 @@ def ispisi_klijenta(ime, prezime, racun, polozaj):
 
     for row in result:
         print(row[0] + " " + row[1] + " ima na stanju " + str(row[3]) + " dinara")
+        print("Ustedeli ste " + str(row[4]) + " dinara.")
 
 
 def prijava(ime, password, polozaj):
@@ -62,3 +63,21 @@ def brisanje(ime, prezime, polozaj):
                             query_vals)
     db.commit()
     print(ime + " " + prezime + " je obrisan")
+
+
+def trenutna_stednja(ime, prezime, racun, polozaj):
+    query_vals = (ime, prezime, racun, polozaj)
+    command_handler.execute("SELECT * FROM korisnici WHERE ime = %s AND prezime = %s AND racun = %s AND polozaj = %s",
+                            query_vals)
+    result = command_handler.fetchall()
+    stanje = ""
+    for row in result:
+        stanje = row[4]
+    return stanje
+
+
+def update_stednja(ime, prezime, racun, polozaj, stednja):
+    query_vals = (stednja, ime, prezime, racun, polozaj)
+    sql = "UPDATE korisnici SET stednja = %s WHERE ime = %s AND prezime = %s AND racun = %s AND polozaj = %s"
+    command_handler.execute(sql, query_vals)
+    db.commit()
