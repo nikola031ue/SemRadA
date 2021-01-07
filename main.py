@@ -2,7 +2,6 @@ import admin as a
 import sluzbenik as s
 import klijent as k
 
-
 def main():
     while 1:
         print("DOBRODOSLI U BANKU")
@@ -26,6 +25,7 @@ def main():
             break
         else:
             print("Nepostojeci izbor")
+
 
 
 main()

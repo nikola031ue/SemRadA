@@ -42,24 +42,24 @@ def prijava(ime, password, polozaj):
     return result
 
 
-def registruj(ime, prezime, password, polozaj):
-    query_vals = (ime, prezime, password, polozaj)
-    command_handler.execute("INSERT INTO korisnici (ime, prezime, password, polozaj) VALUES (%s,%s,%s,%s)", query_vals)
+def registruj(ime, prezime, password, racun, polozaj):
+    query_vals = (ime, prezime, password, racun, polozaj)
+    command_handler.execute("INSERT INTO korisnici (ime, prezime, password, racun, polozaj) VALUES (%s,%s,%s,%s,%s)", query_vals)
     db.commit()
-    korisnik = ""
-    if polozaj == "1":
-        korisnik = "sluzbenik"
-    elif polozaj == "2":
-        korisnik = "klijent"
+
+    if str(polozaj) == "1":
+        print("Novi sluzbenik " + ime + " " + prezime + " je registrivan!")
+    elif str(polozaj) == "2":
+        print("Novi klijent " + ime + " " + prezime + " je registrivan!")
     else:
         print("Admin vec postoji!")
 
-    print("Novi " + korisnik + " " + ime + " " + prezime + " je registrivan")
 
 
-def brisanje(ime, prezime, polozaj):
-    query_vals = (ime, prezime, polozaj)
-    command_handler.execute("DELETE FROM korisnici WHERE ime = %s AND prezime = %s AND polozaj = %s",
+
+def brisanje(ime, prezime, racun, polozaj):
+    query_vals = (ime, prezime, racun, polozaj)
+    command_handler.execute("DELETE FROM korisnici WHERE ime = %s AND prezime = %s AND racun = %s AND polozaj = %s",
                             query_vals)
     db.commit()
     print(ime + " " + prezime + " je obrisan")
@@ -81,3 +81,27 @@ def update_stednja(ime, prezime, racun, polozaj, stednja):
     sql = "UPDATE korisnici SET stednja = %s WHERE ime = %s AND prezime = %s AND racun = %s AND polozaj = %s"
     command_handler.execute(sql, query_vals)
     db.commit()
+
+
+def svi_klijenti(polozaj):
+    query_val = (polozaj, )
+    sql = "SELECT * FROM korisnici WHERE polozaj = %s"
+    command_handler.execute(sql, query_val)
+    result = command_handler.fetchall()
+    ime = []
+    stanje = []
+    for row in result:
+        ime.append(row[0] + "\n" + row[1] + " " + str(row[5]))
+        stanje.append(row[3])
+    return ime, stanje
+
+
+def svi_racuni():
+    command_handler.execute("SELECT racun FROM korisnici")
+    result = command_handler.fetchall()
+
+    racuni = []
+    for row in result:
+        racuni.append(row)
+    return racuni
+

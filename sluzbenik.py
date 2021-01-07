@@ -1,4 +1,6 @@
 import upiti as u
+import graf as g
+import generator_racuna as gr
 
 
 def sluzbenik_session():
@@ -9,7 +11,8 @@ def sluzbenik_session():
         print("2. Obrisi Klijenta")
         print("3. Dodaj novac na racun")
         print("4. Transakcije")
-        print("5. Odjavi se")
+        print("5. Graf Klijentskih stanja")
+        print("6. Odjavi se")
 
         izbor = input(str("Izbor: "))
         if izbor == "1":
@@ -20,16 +23,17 @@ def sluzbenik_session():
             prezime = input(str("Prezime Klijenta: "))
             password = input(str("Lozinka Klijenta: "))
             polozaj = 2
-            u.registruj(ime, prezime, password, polozaj)
+            racun = gr.gen_racun()
+            u.registruj(ime, prezime, password, racun, polozaj)
         elif izbor == "2":
             print("")
             print("Obrisi Klijenta")
             print("")
             ime = input(str("Ime Klijenta: "))
             prezime = input(str("Prezime Klijenta: "))
-            # dodaj racun
+            racun = input(str("Racun Klijenta: "))
             polozaj = 2
-            u.brisanje(ime, prezime, polozaj)
+            u.brisanje(ime, prezime, racun, polozaj)
         elif izbor == "3":
             print("")
             print("Dodaj novac na racun")
@@ -88,8 +92,13 @@ def sluzbenik_session():
             print("")
             print("Klijent primaoc: ")
             u.ispisi_klijenta(ime_primaoca, prezime_primaoca, racun_primaoca, polozaj)
-
         elif izbor == "5":
+            print("")
+            print("Graf Klijentskih stanja")
+            print("")
+            polozaj = 2
+            g.graf(polozaj)
+        elif izbor == "6":
             break
         else:
             print("Pogresan izbor")

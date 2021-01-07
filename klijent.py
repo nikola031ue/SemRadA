@@ -42,7 +42,13 @@ def klijent_session(ime, prezime, password, racun):
                 print("Podigli ste " + za_podizanje + " dinara.")
                 print("")
                 u.ispisi_klijenta(ime, prezime, racun, polozaj)
+        elif izbor == "3":
+            print("")
+            print("Istorija transakcija")
+            print("")
 
+        elif izbor == "4":
+            break
 
 def auth_klijent():
     print("")
