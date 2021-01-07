@@ -1,0 +1,103 @@
+import upiti as u
+
+
+def sluzbenik_session():
+    while 1:
+        print("")
+        print("Sluzbenik meni")
+        print("1. Registruj novog Klijenta")
+        print("2. Obrisi Klijenta")
+        print("3. Dodaj novac na racun")
+        print("4. Transakcije")
+        print("5. Odjavi se")
+
+        izbor = input(str("Izbor: "))
+        if izbor == "1":
+            print("")
+            print("Regiturj novog Klijenta")
+            print("")
+            ime = input(str("Ime klijenta: "))
+            prezime = input(str("Prezime Klijenta: "))
+            password = input(str("Lozinka Klijenta: "))
+            polozaj = 2
+            u.registruj(ime, prezime, password, polozaj)
+        elif izbor == "2":
+            print("")
+            print("Obrisi Klijenta")
+            print("")
+            ime = input(str("Ime Klijenta: "))
+            prezime = input(str("Prezime Klijenta: "))
+            # dodaj racun
+            polozaj = 2
+            u.brisanje(ime, prezime, polozaj)
+        elif izbor == "3":
+            print("")
+            print("Dodaj novac na racun")
+            print("")
+            ime = input(str("Ime Klijenta: "))
+            prezime = input(str("Prezime Klijenta: "))
+            racun = input(str("Broj racuna Klijenta: "))
+            kolicina: float = float(input("Kolicina novca: "))
+            polozaj = 2
+            trenutno_stanje = u.trenutno_stanje(ime, prezime, racun, polozaj)
+            stanje = trenutno_stanje + kolicina
+            u.update_stanje(ime, prezime, racun, polozaj, stanje)
+            u.ispisi_klijenta(ime, prezime, racun, polozaj)
+        elif izbor == "4":
+            print("")
+            print("Transakcije izmedju Klijenata")
+            print("")
+            ime_posiljaoca = input(str("Ime Klijenta posiljaoca: "))
+            prezime_posiljaoca = input(str("Prezime Klijenta posiljaoca: "))
+            racun_posiljaoca = input(str("Broj racuna Kijenta posiljaoca: "))
+            polozaj = 2
+            ime_primaoca = input(str("Ime Klijenta primaoca: "))
+            prezime_primaoca = input(str("Prezime Klijenta primaoca: "))
+            racun_primaoca = input(str("Broj racuna Klijenta primaoca: "))
+
+            trenutno_stanje_posiljaoca = u.trenutno_stanje(ime_posiljaoca, prezime_posiljaoca, racun_posiljaoca, polozaj)
+            trenutno_stanje_primaoca = u.trenutno_stanje(ime_primaoca, prezime_primaoca, racun_primaoca, polozaj)
+
+            kolicina_za_transakciju = (float(input("Kolicina novca za transakciju: ")))
+
+            if trenutno_stanje_posiljaoca < kolicina_za_transakciju:
+                print("Nemate dovoljno novca na racunu!")
+                break
+
+            trenutno_stanje_posiljaoca = trenutno_stanje_posiljaoca - kolicina_za_transakciju
+            trenutno_stanje_primaoca = trenutno_stanje_primaoca + kolicina_za_transakciju
+
+            u.update_stanje(ime_posiljaoca, prezime_posiljaoca, racun_posiljaoca, polozaj, trenutno_stanje_posiljaoca)
+            u.update_stanje(ime_primaoca, prezime_primaoca, racun_primaoca, polozaj, trenutno_stanje_primaoca)
+
+            print("Klijent posiljaoca:")
+            u.ispisi_klijenta(ime_posiljaoca, prezime_posiljaoca, racun_posiljaoca, polozaj)
+            print("")
+            print("Klijent primaoc: ")
+            u.ispisi_klijenta(ime_primaoca, prezime_primaoca, racun_primaoca, polozaj)
+
+        elif izbor == "5":
+            break
+        else:
+            print("Pogresan izbor")
+
+
+def auth_sluzbenik():
+    print("")
+    print("Sluzbenik login")
+    print("")
+
+    ime = input(str("Ime: "))
+    password = input(str("Lozinka: "))
+    polozaj = 1
+    result = u.prijava(ime, password, polozaj)
+    for row in result:
+
+        if ime == row[0]:
+            if password == row[2]:
+                print("Uspeh")
+                sluzbenik_session()
+            else:
+                print("Netacna lozinka")
+        else:
+            print("Pogresno ime ili lozinka")
